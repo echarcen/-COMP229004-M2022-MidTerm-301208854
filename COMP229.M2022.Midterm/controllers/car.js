@@ -46,34 +46,122 @@ module.exports.details = (req, res, next) => {
 // Renders the Add form using the add_edit.ejs template
 module.exports.displayAddPage = (req, res, next) => {
     
-    // ADD YOUR CODE HERE        
+    let newItem = InventoryModel();
+
+    res.render('inventory/add_edit', {
+        title: 'Add a new Item',
+        item: newItem
+    })         
 
 }
 
 // Processes the data submitted from the Add form to create a new car
 module.exports.processAddPage = (req, res, next) => {
 
-    // ADD YOUR CODE HERE
+    let newItem = InventoryModel({
+        _id: req.body.id,
+        item: req.body.item,
+        qty: req.body.qty,
+        status: req.body.status,
+        size : {
+            h: req.body.size_h,
+            w: req.body.size_w,
+            uom: req.body.size_uom,
+        },
+        tags: req.body.tags.split(",").map(word => word.trim())
+    });
+
+    InventoryModel.create(newItem, (err, item) =>{
+        if(err)
+        {
+            console.log(err);
+            res.end(err);
+        }
+        else
+        {
+            // refresh the book list
+            console.log(item);
+            res.redirect('/inventory/list');
+        }
+    });
 
 }
 
 // Gets a car by id and renders the Edit form using the add_edit.ejs template
 module.exports.displayEditPage = (req, res, next) => {
     
-    // ADD YOUR CODE HERE
+    let id = req.params.id;
+
+    InventoryModel.findById(id, (err, itemToEdit) => {
+        if(err)
+        {
+            console.log(err);
+            res.end(err);
+        }
+        else
+        {
+            //show the edit view
+            res.render('views/cars/add_edit', {
+                title: 'Edit Item', 
+                item: itemToEdit
+            })
+        }
+    });
 
 }
 
 // Processes the data submitted from the Edit form to update a car
 module.exports.processEditPage = (req, res, next) => {
     
-    // ADD YOUR CODE HERE
+    let id = req.params.id
+
+    let updatedItem = InventoryModel({
+        _id: req.body.id,
+        item: req.body.item,
+        qty: req.body.qty,
+        status: req.body.status,
+        size : {
+            h: req.body.size_h,
+            w: req.body.size_w,
+            uom: req.body.size_uom,
+        },
+        tags: req.body.tags.split(",").map(word => word.trim())
+    });
+
+    // console.log(updatedItem);
+
+    InventoryModel.updateOne({_id: id}, updatedItem, (err) => {
+        if(err)
+        {
+            console.log(err);
+            res.end(err);
+        }
+        else
+        {
+            // console.log(req.body);
+            // refresh the book list
+            res.redirect('/inventory/list');
+        }
+    });
     
 }
 
 // Deletes a car based on its id.
 module.exports.performDelete = (req, res, next) => {
     
-    // ADD YOUR CODE HERE
+    let id = req.params.id;
+
+    InventoryModel.remove({_id: id}, (err) => {
+        if(err)
+        {
+            console.log(err);
+            res.end(err);
+        }
+        else
+        {
+            // refresh the book list
+            res.redirect('/inventory/list');
+        }
+    });
 
 }
