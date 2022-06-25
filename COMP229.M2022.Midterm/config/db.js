@@ -1,4 +1,4 @@
-// Do not expose your credentials in your code.
+
 let atlasDB = "mongodb+srv://echarcen:<password>@cluster0.coswfc7.mongodb.net/?retryWrites=true&w=majority";
 
 // Database setup

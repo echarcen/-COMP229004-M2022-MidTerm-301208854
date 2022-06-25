@@ -46,9 +46,9 @@ module.exports.details = (req, res, next) => {
 // Renders the Add form using the add_edit.ejs template
 module.exports.displayAddPage = (req, res, next) => {
     
-    let newItem = InventoryModel();
+    let newItem = CarModel();
 
-    res.render('inventory/add_edit', {
+    res.render('cars/add_edit', {
         title: 'Add a new Item',
         item: newItem
     })         
@@ -58,7 +58,7 @@ module.exports.displayAddPage = (req, res, next) => {
 // Processes the data submitted from the Add form to create a new car
 module.exports.processAddPage = (req, res, next) => {
 
-    let newItem = InventoryModel({
+    let newItem = CarModel({
         _id: req.body.id,
         item: req.body.item,
         qty: req.body.qty,
@@ -81,7 +81,7 @@ module.exports.processAddPage = (req, res, next) => {
         {
             // refresh the book list
             console.log(item);
-            res.redirect('/inventory/list');
+            res.redirect('cars/list');
         }
     });
 
@@ -101,7 +101,7 @@ module.exports.displayEditPage = (req, res, next) => {
         else
         {
             //show the edit view
-            res.render('views/cars/add_edit', {
+            res.render('cars/add_edit', {
                 title: 'Edit Item', 
                 item: itemToEdit
             })
@@ -115,7 +115,7 @@ module.exports.processEditPage = (req, res, next) => {
     
     let id = req.params.id
 
-    let updatedItem = InventoryModel({
+    let updatedItem = CarModel({
         _id: req.body.id,
         item: req.body.item,
         qty: req.body.qty,
@@ -140,7 +140,7 @@ module.exports.processEditPage = (req, res, next) => {
         {
             // console.log(req.body);
             // refresh the book list
-            res.redirect('/inventory/list');
+            res.redirect('cars/list');
         }
     });
     
@@ -160,7 +160,7 @@ module.exports.performDelete = (req, res, next) => {
         else
         {
             // refresh the book list
-            res.redirect('/inventory/list');
+            res.redirect('cars/list');
         }
     });
 
