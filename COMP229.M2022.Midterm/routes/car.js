@@ -37,12 +37,12 @@ router.get('/edit/:id', carController.displayEditPage);
 router.post('/edit/:id', carController.processEditPage);
 
 // Delete
-router.get('/delete/:id', carController.performDelete);
+router.get('/delete/:id', requireAuth, carController.performDelete);
 
 /* GET Route for displaying the Add page - CREATE Operation */
-router.get('/add', carController.displayAddPage);
+router.get('/add', requireAuth, carController.displayAddPage);
 
 /* POST Route for processing the Add page - CREATE Operation */
-router.post('/add', carController.processAddPage);
+router.post('/add', requireAuth, carController.processAddPage);
 
 module.exports = router;
